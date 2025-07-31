@@ -78,6 +78,7 @@ staging_and_survival <- patient_meta_data%>%
     dplyr::select(-ADJ_CHEMO_DRUGS) %>%
     left_join(patient_malignancy_ranks) 
 
+colnames(patient_meta_data)
 
 ###############
 #prepare clinical data
@@ -302,7 +303,7 @@ all_predictions_long_by_UICC_c_indices <- all_predictions_long_by_UICC %>%
 
 
 ####
-# 💩 code by PJ #
+# code by PJ #
 ####
 
 #Prepare data for UICC and Full model

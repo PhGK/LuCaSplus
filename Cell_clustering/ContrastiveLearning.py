@@ -15,7 +15,7 @@ import torch.nn.functional as F
 from tqdm import tqdm
 
 
-dat_raw = pd.read_parquet('../data/MERGED_normalized_5000genesTIERS.parquet')#.iloc[:500,:]
+dat_raw = pd.read_parquet('../data/MERGED_normalized_5000genesTIERS.parquet')
 
 dat = dat_raw.iloc[:,6:]
 
@@ -77,7 +77,6 @@ class Backbone(nn.Module):
         super().__init__()
 
         self.layers = nn.Sequential(
-                    #nn.Dropout(0.8),          #0.5
                     nn.Linear(inp, hidden), 
                     nn.BatchNorm1d(hidden),
                     nn.LeakyReLU(), 
