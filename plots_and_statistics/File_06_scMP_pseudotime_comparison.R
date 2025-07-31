@@ -24,6 +24,7 @@ library(dyno)
 library(viridis)
 library(cowplot)
 
+#use data used for this code is available at the figshare repository
 
 getwd()
 setwd('plots_statistics')

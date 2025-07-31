@@ -16,20 +16,27 @@ library(pROC)
 library(viridis)
 library(cowplot)
 
+
+#use data used for this code is available at the figshare repository
+
+
 getwd()
 setwd('plots_statistics')
 
 
-match_ids <- read.csv('/mnt/ssd/shared/LungCAIRE_SingleCell/data/LungCAIRE_snRNAseq_cohort.csv') %>% 
-  dplyr::select(Match_ID, Pseudo) %>% mutate(ENR = Match_ID) #%>% 
-  #filter(Pseudo != 'LC395')
+#match_ids <- read.csv('/mnt/ssd/shared/LungCAIRE_SingleCell/data/LungCAIRE_snRNAseq_cohort.csv') %>% 
+#  dplyr::select(Match_ID, Pseudo) %>% mutate(ENR = Match_ID)
+#
+#patient_meta_data <- read.csv('/mnt/ssd/shared/LungCAIRE_SingleCell/data/Metadata_LungCAIRE_retrospective_Berlin_Cologne_20250303.csv') %>% 
+#  mutate(UICC8_edition2 = UICC8_EDITION2, OS_m = OS_M, Event = EVENT,
+#            age = DIA_AGE_Y, Sex = SEX, Entity = ENTITY, 
+#            Adj_therapy = ADJ_THERAPY, Grade = GRADE) %>% 
+#  left_join(match_ids) %>% 
+#  filter(Pseudo != 'LC125')
 
-patient_meta_data <- read.csv('/mnt/ssd/shared/LungCAIRE_SingleCell/data/Metadata_LungCAIRE_retrospective_Berlin_Cologne_20250303.csv') %>% 
-  left_join(match_ids) %>%
-  mutate(UICC8_edition3 = ifelse(UICC8_EDITION2 %in% c('IA', 'IB'), 'I', UICC8_EDITION2)) %>% 
-  mutate(Entity = ENTITY, Event = EVENT, OS_m = OS_M, Grade = GRADE, Adj_therapy = ADJ_THERAPY) %>% 
-  #filter(Pseudo != 'LC395') %>% 
-  filter(ENTITY != 'ASC') 
+patient_meta_data <- read.csv('../data/Full_cohort_with_clinical_data.csv') %>% 
+    mutate(ADJ_CHEMO_DRUGS = Adj_therapy) %>%
+    filter(Pseudo != 'LC125')
 
 #######################
 #load clean annotation and replace old annotation

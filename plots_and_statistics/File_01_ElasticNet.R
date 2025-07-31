@@ -21,6 +21,7 @@ library(ggsankey)
 library(readxl)
 library(compareC)
 
+#use data used for this code is available at the figshare repository
 
 setwd('/mnt/ssd/shared/LungCAIRE_SingleCell/plots_statistics')
 cancer_type <- 'SCC'
@@ -43,15 +44,19 @@ fill_left_zeros <- function(dummy_matrix) {
   return(as.data.frame(filled_matrix))
 }
 
-match_ids <- read.csv('/mnt/ssd/shared/LungCAIRE_SingleCell/data/LungCAIRE_snRNAseq_cohort.csv') %>% 
-  dplyr::select(Match_ID, Pseudo) %>% mutate(ENR = Match_ID)
+#match_ids <- read.csv('/mnt/ssd/shared/LungCAIRE_SingleCell/data/LungCAIRE_snRNAseq_cohort.csv') %>% 
+#  dplyr::select(Match_ID, Pseudo) %>% mutate(ENR = Match_ID)
+#
+#patient_meta_data <- read.csv('/mnt/ssd/shared/LungCAIRE_SingleCell/data/Metadata_LungCAIRE_retrospective_Berlin_Cologne_20250303.csv') %>% 
+#  mutate(UICC8_edition2 = UICC8_EDITION2, OS_m = OS_M, Event = EVENT,
+#            age = DIA_AGE_Y, Sex = SEX, Entity = ENTITY, 
+#            Adj_therapy = ADJ_THERAPY, Grade = GRADE) %>% 
+#  left_join(match_ids) %>% 
+#  filter(Pseudo != 'LC125')
 
-patient_meta_data <- read.csv('/mnt/ssd/shared/LungCAIRE_SingleCell/data/Metadata_LungCAIRE_retrospective_Berlin_Cologne_20250303.csv') %>% 
-  mutate(UICC8_edition2 = UICC8_EDITION2, OS_m = OS_M, Event = EVENT,
-            age = DIA_AGE_Y, Sex = SEX, Entity = ENTITY, 
-            Adj_therapy = ADJ_THERAPY, Grade = GRADE) %>% 
-  left_join(match_ids) %>% 
-  filter(Pseudo != 'LC125')
+patient_meta_data <- read.csv('../data/Full_cohort_with_clinical_data.csv') %>% 
+    mutate(ADJ_CHEMO_DRUGS = Adj_therapy) %>%
+    filter(Pseudo != 'LC125')
 
 clean_cell_annotation <- read.csv('./use_data/VICREG_clustering_highinputdropout_5000epochs_rev_annotation.csv') %>% 
   dplyr::select(cluster = Cluster_ID, Tier_1, Tier_2, Tier_3)
@@ -429,7 +434,7 @@ calculate_5yr_survival <- function(survival_time, death_event) {
   fit <- survfit(surv_obj ~ 1)
   
   # Determine the proper time point:
-  time_point <- ifelse(max(survival_time, na.rm = TRUE) < 10, 5, 60)
+  time_point <-  60
   
   # Get the survival summary at the chosen time point
   surv_summary <- summary(fit, times = time_point)
