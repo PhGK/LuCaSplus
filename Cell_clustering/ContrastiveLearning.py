@@ -80,18 +80,14 @@ class Backbone(nn.Module):
                     nn.Linear(inp, hidden), 
                     nn.BatchNorm1d(hidden),
                     nn.LeakyReLU(), 
-                    nn.Dropout(0.0),      
                     nn.Linear(hidden, hidden),
                     nn.BatchNorm1d(hidden),
                     nn.LeakyReLU(),
-                    nn.Dropout(0.0),      
                     nn.Linear(hidden, hidden),
                     nn.BatchNorm1d(hidden),
                     nn.LeakyReLU(),
-                    nn.Dropout(0.0),      
                     nn.Linear(hidden, 1000),
                     nn.LeakyReLU(),
-                    nn.Dropout(0.0),      
                     nn.Linear(1000, outp))
 
     def forward(self,x):
@@ -142,10 +138,10 @@ class Model(nn.Module):
         cov_x = (x.T @ x) / (len(x) - 1) # covariance (3)
         cov_y = (y.T @ y) / (len(y) - 1)
         cov_loss = off_diagonal(cov_x).pow_(2).sum().div(
-            256) + off_diagonal(cov_y).pow_(2).sum().div(256)
+            512) + off_diagonal(cov_y).pow_(2).sum().div(512)
 
         
-        loss = (25. * repr_loss + 25. * std_loss + 1. * cov_loss)
+        loss = (25. * repr_loss + 25. * std_loss + 2. * cov_loss)
         return loss
 
     def dal(self, x,patient_y):
@@ -193,8 +189,8 @@ for epoch in range(10001):
         dropout1 = nn.Dropout(ps[0])
         dropout2 = nn.Dropout(ps[1])
 
-        X1 = dropout1.forward(X.clone()) #* 0.9 + 0.1 * noise1
-        X2 = dropout2.forward(X.clone()) #* 0.9 + 0.1 * noise2
+        X1 = dropout1.forward(X.clone()) 
+        X2 = dropout2.forward(X.clone()) 
 
         contrastive_loss = model(X1, X2)
 
