@@ -148,10 +148,6 @@ all_clinical_data_with_tumor <- filtered_all_clinical_data %>%
 #####################
 
 only_tumor_data <- all_clinical_data_with_tumor %>% select(matches("^\\d+$"))
-only_heterogeneity <- filtered_all_clinical_data %>% 
-  dplyr::select(Pseudo) %>% 
-  left_join(cluster_per_patient) %>% 
-  dplyr::select(-Pseudo)
 
 dim(all_clinical_data_with_tumor)
 dim(only_tumor_data)
